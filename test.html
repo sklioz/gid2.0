@@ -3,82 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <title>Профориентационный тест</title>
-<link rel="stylesheet" href="style.css">
+<style>
+body {
+  font-family: Arial, sans-serif;
+}
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  text-align: center;
+}
+.side-btn {
+  position: fixed;
+  left: 20px;
+  top: 20px;
+}
+.question-number {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.question-text {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #4e73df;
+  color: white;
+  transition: 0.3s;
+}
+button:hover {
+  transform: scale(1.05);
+  background: #2e59d9;
+}
+</style>
 </head>
 <body>
 
-<header>
-<h1>Профориентационный тест</h1>
-<p>Ответь на вопросы и проанализируй себя</p>
-</header>
+<div class="side-btn">
+  <a href="index.html"><button>Главная</button></a>
+</div>
 
-<nav>
-<a class="btn" href="index.html">Главная</a>
-<a class="btn" href="universities.html">Вузы</a>
-<a class="btn" href="test.html">Тест</a>
-<a class="btn" href="preparation.html">Подготовка</a>
-</nav>
+<div class="container">
+  <h1>Профориентационный тест</h1>
+  <div id="question-number" class="question-number"></div>
+  <div id="question-text" class="question-text"></div>
+  <div id="buttons">
+    <button onclick="answer('5')">Да</button>
+    <button onclick="answer('4')">Скорее да, чем нет</button>
+    <button onclick="answer('3')">Затрудняюсь</button>
+    <button onclick="answer('2')">Скорее нет</button>
+    <button onclick="answer('1')">Нет</button>
+  </div>
+  <div id="result"></div>
+</div>
 
-<main>
-<section>
-<h2>Вопросы</h2>
-
-<form id="testForm">
-<!-- 25 вопросов -->
 <script>
 const questions = [
-"Мне нравится работать с числами и логическими задачами",
-"Мне интересно изучать компьютерные технологии",
-"Мне комфортно выступать перед людьми",
-"Мне нравится помогать другим",
-"Мне интересна работа с техникой",
-"Мне нравится анализировать информацию",
-"Мне нравится читать и писать тексты",
-"Мне интересно изучать иностранные языки",
-"Мне нравится творческая деятельность",
-"Мне важно стабильное рабочее место",
-"Мне интересно разбираться в законах",
-"Мне нравится биология и медицина",
-"Мне интересно создавать новые проекты",
-"Мне нравится работать в команде",
-"Мне комфортно принимать решения",
-"Мне нравится изучать экономику",
-"Мне интересно программирование",
-"Мне нравится работать с документами",
-"Мне интересно проектирование",
-"Мне нравится обучать других",
-"Мне интересно исследовать новое",
-"Мне нравится работать с людьми",
-"Мне важно получать высокий доход",
-"Мне интересно решать практические задачи",
-"Мне нравится планировать своё время"
+  "Мне нравится решать логические задачи",
+  "Мне интересно программирование",
+  "Мне нравится работать с техникой",
+  "Мне интересна математика",
+  "Мне нравится разбираться, как устроены вещи",
+  "Мне комфортно работать за компьютером",
+  "Мне нравится анализировать данные",
+  "Мне интересно изучать новые технологии",
+  "Мне нравится физика",
+  "Мне интересно создавать что-то новое",
+  "Мне нравится работать самостоятельно",
+  "Мне нравится искать ошибки и исправлять их",
+  "Мне интересна инженерная деятельность",
+  "Мне нравится точная работа",
+  "Мне интересны технические профессии",
+  "Мне нравится учиться новому",
+  "Мне интересно решать сложные задачи",
+  "Мне нравится планировать свою работу",
+  "Мне интересно работать с числами",
+  "Мне нравится доводить дело до конца",
+  "Мне интересны IT-профессии",
+  "Мне нравится работать по инструкции",
+  "Мне интересны точные науки",
+  "Мне нравится системный подход",
+  "Я хочу связать будущее с технологиями"
 ];
 
-for (let i = 0; i < questions.length; i++) {
-document.write(`
-<p>${i + 1}. ${questions[i]}</p>
-<label><input type="radio" name="q${i}"> Да</label><br>
-<label><input type="radio" name="q${i}"> Иногда</label><br>
-<label><input type="radio" name="q${i}"> Нет</label><br><br>
-`);
+let currentQuestion = 0;
+let answers = []; // сюда будем сохранять ответы (1-5)
+
+// Показываем вопрос
+function showQuestion() {
+  document.getElementById("question-number").innerText = `Вопрос ${currentQuestion + 1} из ${questions.length}`;
+  document.getElementById("question-text").innerText = questions[currentQuestion];
 }
-</script>
-<button type="button" class="test-btn" onclick="finishTest()">Завершить тест</button>
-</form>
 
-<p id="result"></p>
-</section>
-</main>
+// Глобальная функция для кнопок
+window.answer = function(value) {
+  answers.push(parseInt(value)); // сохраняем ответ
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    // Конец теста
+    document.getElementById("question-number").innerText = "Спасибо за прохождение теста!";
+    document.getElementById("question-text").innerText = "";
+    document.getElementById("buttons").innerHTML =
+      '<a href="index.html"><button>Завершить тест</button></a>';
 
-<footer>
-<p>Профориентационный тест</p>
-</footer>
-
-<script>
-function finishTest() {
-document.getElementById("result").innerHTML =
-"<strong>Спасибо за прохождение теста!</strong><br>Рекомендуется рассмотреть несколько направлений и выбрать наиболее интересное.";
+    // Можно вывести суммарный результат или средний балл
+    let total = answers.reduce((a,b) => a+b, 0);
+    let average = (total / answers.length).toFixed(2);
+    document.getElementById("result").innerText = `Ваш средний балл: ${average}`;
+  }
 }
+
+// Инициализация при загрузке страницы
+showQuestion();
 </script>
 
 </body>

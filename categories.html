@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Каталог профессий</title>
+<style>
+body { font-family: Arial, sans-serif; margin:0; padding:0; }
+header { background:#4e73df; color:white; text-align:center; padding:20px; }
+.side-btn {
+  position: fixed;
+  left: 20px;
+  top: 20px;
+  z-index: 1000;
+}
+.side-btn button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  background: #4e73df;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.side-btn button:hover {
+  background: #2e59d9;
+  transform: scale(1.05);
+}
+.container { display:flex; max-width:1000px; margin:20px auto; }
+.categories { width:200px; border-right:2px solid #ccc; padding:10px; }
+.categories button {
+  display:block; width:100%; padding:10px; margin:5px 0; border:none; border-radius:5px;
+  cursor:pointer; background:#f0f0f0; transition:0.3s;
+}
+.categories button:hover { background:#2e59d9; color:white; }
+.catalog { flex:1; padding:20px; }
+.job { border:1px solid #ccc; border-radius:8px; margin-bottom:15px; padding:15px; background:#f9f9f9; }
+.job h3 { margin:0 0 10px 0; color:#2e59d9; }
+</style>
+</head>
+<body>
+
+<!-- Кнопка Вернуться на главную -->
+<div class="side-btn">
+  <a href="index.html"><button>Главная</button></a>
+</div>
+
+<header>
+  <h1>Каталог профессий</h1>
+</header>
+
+<div class="container">
+  <div class="categories">
+    <h2>Категории</h2>
+    <button onclick="showCategory('it')">IT и программирование</button>
+    <button onclick="showCategory('engineering')">Инженерия и техника</button>
+    <button onclick="showCategory('medicine')">Медицина</button>
+    <button onclick="showCategory('creative')">Творчество</button>
+  </div>
+  <div class="catalog" id="catalog">
+    <p>Выберите категорию, чтобы увидеть профессии</p>
+  </div>
+</div>
+
+<script>
+// Каталог профессий без плюсов и минусов
+const professions = {
+  it: [
+    {name: "Программист", desc: "Разрабатывает программное обеспечение, сайты и приложения."},
+    {name: "Системный администратор", desc: "Следит за работой серверов и сети."},
+    {name: "Аналитик данных", desc: "Работает с большими объемами данных для принятия решений."}
+  ],
+  engineering: [
+    {name: "Инженер-механик", desc: "Проектирует и обслуживает механические системы."},
+    {name: "Электроинженер", desc: "Работает с электрическими системами и схемами."},
+    {name: "Конструктор", desc: "Создает чертежи и проекты для производства."}
+  ],
+  medicine: [
+    {name: "Врач", desc: "Диагностирует и лечит заболевания."},
+    {name: "Медсестра", desc: "Помогает врачам и ухаживает за пациентами."},
+    {name: "Фармацевт", desc: "Разрабатывает и отпускает лекарства."}
+  ],
+  creative: [
+    {name: "Дизайнер", desc: "Создает визуальные концепции и графику."},
+    {name: "Архитектор", desc: "Проектирует здания и интерьеры."},
+    {name: "Маркетолог", desc: "Разрабатывает рекламные стратегии и креативные кампании."}
+  ]
+};
+
+// Функция отображения выбранной категории
+function showCategory(cat) {
+  const catalog = document.getElementById("catalog");
+  catalog.innerHTML = ""; // очищаем
+  if(professions[cat].length === 0){
+    catalog.innerHTML = "<p>В этой категории пока нет профессий.</p>";
+    return;
+  }
+  professions[cat].forEach(job => {
+    const div = document.createElement("div");
+    div.className = "job";
+    div.innerHTML = `<h3>${job.name}</h3><p>${job.desc}</p>`;
+    catalog.appendChild(div);
+  });
+}
+</script>
+
+</body>
+</html>
